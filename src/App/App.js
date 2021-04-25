@@ -6,6 +6,7 @@ import { Switch, Route } from 'react-router-dom'
 import './App.css';
 import ShopPage from '../Pages/Shop/shop.jsx';
 import Header from '../Components/header/header.jsx';
+import SignInAndUpPage from '../Pages/sign-in-up/sign-in-up.component.jsx';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         </Route>
         <Route path="/shop" >
           <ShopPage />
+        </Route>
+        <Route path="/signin">
+          <SignInAndUpPage />
         </Route>
       </Switch>
     </div>
