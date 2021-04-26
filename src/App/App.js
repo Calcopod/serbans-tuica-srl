@@ -6,7 +6,7 @@ import ShopPage from '../Pages/Shop/shop.jsx';
 import Header from '../Components/header/header.jsx';
 import SignInAndUpPage from '../Pages/sign-in-up/sign-in-up.component.jsx';
 
-import { auth } from '../firebase/firebase.utils'
+import { auth, createUserProfileDoc} from '../firebase/firebase.utils'
 
 import './App.css';
 
@@ -24,10 +24,22 @@ class App extends React.Component {
   componentDidMount() {
     // This will run everytime auth state changes:
     // Open subscription:
-    this.unsubscribeFromAuth = auth.onAuthStateChanged( user => {
-      this.setState({ currentUser: user })
+    this.unsubscribeFromAuth = auth.onAuthStateChanged( async userAuth => {
+      if( userAuth ) {
+        const userRef = await createUserProfileDoc( userAuth )
 
-      console.log( user )
+        userRef.onSnapshot( snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          })
+        })
+      }
+      else {
+        this.setState({currentUser: userAuth})
+      }
     })
   }
 
